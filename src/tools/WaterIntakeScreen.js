@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   View, Text, TouchableOpacity, StyleSheet,
-  ScrollView, TextInput, Modal, Alert,
+  ScrollView, TextInput, Modal, Alert, KeyboardAvoidingView, Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -171,9 +171,10 @@ export default function WaterIntakeScreen({ navigation }) {
         )}
       </ScrollView>
 
-      {/* Goal setting modal */}
-      <Modal visible={showGoal} transparent animationType="slide">
-        <View style={styles.modalOverlay}>
+      {/* Goal setting modal — appears at TOP above keyboard */}
+      <Modal visible={showGoal} transparent animationType="fade">
+        <KeyboardAvoidingView style={styles.modalOverlay} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+          <TouchableOpacity style={StyleSheet.absoluteFillObject} activeOpacity={1} onPress={() => setShowGoal(false)} />
           <View style={styles.modalBox}>
             <Text style={styles.modalTitle}>Set Daily Goal</Text>
             <Text style={styles.modalSub}>Recommended: 2000–3000ml per day</Text>
@@ -196,7 +197,7 @@ export default function WaterIntakeScreen({ navigation }) {
               </TouchableOpacity>
             </View>
           </View>
-        </View>
+        </KeyboardAvoidingView>
       </Modal>
 
       <AdBanner />
@@ -252,8 +253,8 @@ const styles = StyleSheet.create({
   logItem: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 8, borderBottomWidth: 0.5, borderBottomColor: COLORS.border },
   logTime: { fontSize: 13, color: COLORS.textTertiary },
   logMl: { fontSize: 13, fontWeight: '500', color: COLORS.accent },
-  modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
-  modalBox: { backgroundColor: COLORS.bg, borderTopLeftRadius: 24, borderTopRightRadius: 24, padding: 24, gap: 12 },
+  modalOverlay: { flex: 1, justifyContent: 'flex-start', paddingTop: 80 },
+  modalBox: { marginHorizontal: 16, backgroundColor: COLORS.bg, borderRadius: 20, padding: 24, gap: 12, zIndex: 1 },
   modalTitle: { fontSize: 18, fontWeight: '600', color: COLORS.textPrimary },
   modalSub: { fontSize: 13, color: COLORS.textSecondary },
   modalInput: { borderWidth: 0.5, borderColor: COLORS.border, borderRadius: RADIUS.lg, padding: 14, fontSize: 32, color: COLORS.textPrimary, textAlign: 'center', backgroundColor: COLORS.bgSecondary },

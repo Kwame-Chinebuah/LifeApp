@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import {
   View, Text, TouchableOpacity, StyleSheet,
-  TextInput, ScrollView, Image, Share, Alert,
+  TextInput, ScrollView, Image, Share, Alert, KeyboardAvoidingView, Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, RADIUS } from '../data/theme';
@@ -58,7 +58,8 @@ export default function QRGeneratorScreen({ navigation }) {
         <Text style={styles.title}>QR Generator</Text>
       </View>
 
-      <ScrollView contentContainerStyle={styles.content}>
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
         {/* Type selector */}
         <ScrollView horizontal showsHorizontalScrollIndicator={false}
           style={styles.typeScroll} contentContainerStyle={styles.typeContent}>
@@ -110,6 +111,7 @@ export default function QRGeneratorScreen({ navigation }) {
           </View>
         )}
       </ScrollView>
+      </KeyboardAvoidingView>
 
       <AdBanner />
     </SafeAreaView>

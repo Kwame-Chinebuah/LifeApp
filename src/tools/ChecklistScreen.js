@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   View, Text, TouchableOpacity, StyleSheet,
-  TextInput, FlatList, Alert,
+  TextInput, FlatList, Alert, KeyboardAvoidingView, Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -110,6 +110,7 @@ export default function ChecklistScreen({ navigation }) {
         )}
       </View>
 
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       {/* Task list */}
       <FlatList
         data={tasks}
@@ -153,6 +154,7 @@ export default function ChecklistScreen({ navigation }) {
         </TouchableOpacity>
       </View>
 
+      </KeyboardAvoidingView>
       <AdBanner />
     </SafeAreaView>
   );
