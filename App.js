@@ -40,6 +40,8 @@ import FlagQuizScreen         from './src/tools/FlagQuizScreen';
 import WordScrambleScreen     from './src/tools/WordScrambleScreen';
 import TrueOrFalseScreen      from './src/tools/TrueOrFalseScreen';
 import QuickMathsScreen       from './src/tools/QuickMathsScreen';
+import PeriodTrackerScreen    from './src/tools/PeriodTrackerScreen';
+import ProScreen              from './src/screens/ProScreen';
 
 const Stack = createStackNavigator();
 
@@ -88,6 +90,8 @@ export default function App() {
         <Stack.Screen name="WordScramble"       component={WordScrambleScreen} />
         <Stack.Screen name="TrueOrFalse"        component={TrueOrFalseScreen} />
         <Stack.Screen name="QuickMaths"         component={QuickMathsScreen} />
+        <Stack.Screen name="PeriodTracker"      component={PeriodTrackerScreen} />
+        <Stack.Screen name="Pro"                component={ProScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

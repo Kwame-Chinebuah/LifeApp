@@ -192,6 +192,7 @@ export default function HomeScreen({ navigation }) {
       case 'Meditation':          navigation.navigate('Meditation'); break;
       case 'Breathing':           navigation.navigate('Breathing'); break;
       case 'MedicationReminder':  navigation.navigate('MedicationReminder'); break;
+      case 'PeriodTracker':       navigation.navigate('PeriodTracker'); break;
       case 'PasswordManager':     navigation.navigate('PasswordManager'); break;
       case 'QRGenerator':         navigation.navigate('QRGenerator'); break;
       case 'Ruler':               navigation.navigate('Ruler'); break;
@@ -375,6 +376,12 @@ export default function HomeScreen({ navigation }) {
           </ScrollView>
 
           <View style={styles.sidebarBottom}>
+            <TouchableOpacity style={styles.proBtn}
+              onPress={() => { closeSidebar(); navigation.navigate('Pro'); }}>
+              <Text style={styles.proIcon}>⭐</Text>
+              <Text style={styles.proLabel}>Upgrade to Pro</Text>
+              <Text style={styles.proPrice}>£1/mo</Text>
+            </TouchableOpacity>
             <TouchableOpacity style={styles.settingsBtn}
               onPress={() => { closeSidebar(); navigation.navigate('Settings'); }}>
               <Text style={styles.settingsIcon}>⚙️</Text>
@@ -447,7 +454,11 @@ const styles = StyleSheet.create({
   sidebarLabelActive: { fontWeight: '500', color: COLORS.textPrimary },
   badge:         { backgroundColor: COLORS.accent, borderRadius: 10, paddingHorizontal: 6, paddingVertical: 1 },
   badgeText:     { fontSize: 10, color: '#fff', fontWeight: '600' },
-  sidebarBottom: { padding: 12, borderTopWidth: 0.5, borderTopColor: COLORS.border },
+  sidebarBottom: { padding: 12, borderTopWidth: 0.5, borderTopColor: COLORS.border, gap: 6 },
+  proBtn: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 10, paddingHorizontal: 10, borderRadius: RADIUS.md, backgroundColor: COLORS.accentLight, marginBottom: 2 },
+  proIcon: { fontSize: 16 },
+  proLabel: { flex: 1, fontSize: 13, color: COLORS.accentText, fontWeight: '600' },
+  proPrice: { fontSize: 12, color: COLORS.accentText, opacity: 0.8 },
   settingsBtn:   { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 10, paddingHorizontal: 10, borderRadius: RADIUS.md },
   settingsIcon:  { fontSize: 18 },
   settingsLabel: { fontSize: 14, color: COLORS.textSecondary },

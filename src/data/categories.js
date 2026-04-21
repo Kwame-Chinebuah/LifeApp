@@ -28,6 +28,7 @@ export const TOOLS = {
     { id: 'Meditation',     icon: '🧘', label: 'Meditation',      desc: 'Calm timer'            },
     { id: 'Breathing',      icon: '🌬️', label: 'Breathing Timer', desc: 'Inhale & exhale'       },
     { id: 'MedicationReminder', icon: '💊', label: 'Medication',  desc: 'Reminder tracker'      },
+    { id: 'PeriodTracker',  icon: '🩸', label: 'Period Tracker',  desc: 'Cycle & ovulation'     },
   ],
   practical: [
     { id: 'QRGenerator',    icon: '📱', label: 'QR Generator',    desc: 'Create QR codes'       },

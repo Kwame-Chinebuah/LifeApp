@@ -1,31 +1,48 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { COLORS } from '../data/theme';
+import { View, StyleSheet } from 'react-native';
 
-// AD BANNER — positioned at TOP just under the heading
-// Replace this View with AdMobBanner when ready:
+// ─── AdMob Banner ─────────────────────────────────────────────
+// App ID:     ca-app-pub-8920454653234729~3861757950
+// Ad Unit ID: ca-app-pub-8920454653234729/8642463882
+//
+// TO ACTIVATE REAL ADS:
+// 1. Run: npx expo install expo-ads-admob
+// 2. Uncomment the import and AdMobBanner block below
+// 3. Delete the placeholder View
+// ─────────────────────────────────────────────────────────────
+
 // import { AdMobBanner } from 'expo-ads-admob';
-// <AdMobBanner bannerSize="fullBanner" adUnitID="ca-app-pub-XXXX/XXXX" />
+
+const AD_UNIT_ID = 'ca-app-pub-8920454653234729/8642463882';
 
 export default function AdBanner() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>📢 Ad — Connect AdMob to earn here</Text>
+      {/*
+      <AdMobBanner
+        bannerSize="fullBanner"
+        adUnitID={AD_UNIT_ID}
+        servePersonalizedAds={false}
+        onDidFailToReceiveAdWithError={err => console.log('AdMob error:', err)}
+      />
+      */}
+      <View style={styles.placeholder} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: 48,
-    backgroundColor: COLORS.bgSecondary,
+    height: 50,
+    backgroundColor: '#F5F5F5',
     borderBottomWidth: 0.5,
-    borderBottomColor: COLORS.border,
+    borderBottomColor: '#E0E0E0',
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'hidden',
   },
-  text: {
-    fontSize: 11,
-    color: COLORS.textTertiary,
+  placeholder: {
+    height: 50,
+    width: '100%',
   },
 });
