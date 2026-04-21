@@ -21,7 +21,8 @@
         "foregroundImage": "./images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "assets": ["./assets/adi-registration.properties"]
     },
     "web": {
       "favicon": "./assets/favicon.png"
