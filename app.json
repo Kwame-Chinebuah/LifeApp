@@ -34,7 +34,7 @@
           "iosAppId": "ca-app-pub-8920454653234729~3861757950"
         }
       ],
-      "./withAdiRegistration.js"
+      "./withAdiRegistration"
     ],
     "extra": {
       "eas": {
