@@ -21,8 +21,7 @@
         "foregroundImage": "./images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true,
-      "assets": ["./assets/adi-registration.properties"]
+      "edgeToEdgeEnabled": true
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -33,7 +32,8 @@
         {
           "androidAppId": "ca-app-pub-8920454653234729~3861757950"
         }
-      ]
+      ],
+      "./withAdiRegistration.js"
     ],
     "extra": {
       "eas": {
