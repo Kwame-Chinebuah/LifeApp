@@ -1,7 +1,8 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useRef } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { COLORS, RADIUS } from '../data/theme';
+import { useTheme } from '../data/ThemeContext';
+import { RADIUS } from '../data/theme';
 import AdBanner from '../components/AdBanner';
 
 const FLAGS = [
@@ -24,23 +25,23 @@ const FLAGS = [
 
 function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
 
-function getQuestion(all, used) {
-  const remaining = all.filter(f => !used.includes(f.answer));
-  const pool = remaining.length >= 4 ? remaining : all;
-  const correct = pool[Math.floor(Math.random() * pool.length)];
-  const wrong = shuffle(all.filter(f => f.answer !== correct.answer)).slice(0, 3);
-  const options = shuffle([correct, ...wrong]);
-  return { correct, options };
+function getQuestion(recentAnswers) {
+  const pool = FLAGS.filter(f => !recentAnswers.includes(f.answer));
+  const available = pool.length >= 4 ? pool : FLAGS;
+  const correct = available[Math.floor(Math.random() * available.length)];
+  const wrong = shuffle(FLAGS.filter(f => f.answer !== correct.answer)).slice(0, 3);
+  return { correct, options: shuffle([correct, ...wrong]) };
 }
 
 export default function FlagQuizScreen({ navigation }) {
-  const [score, setScore]     = useState(0);
-  const [total, setTotal]     = useState(0);
-  const [used, setUsed]       = useState([]);
-  const [q, setQ]             = useState(() => getQuestion(FLAGS, []));
-  const [chosen, setChosen]   = useState(null);
-  const [streak, setStreak]   = useState(0);
-  const shakeAnim = React.useRef(new Animated.Value(0)).current;
+  const { COLORS } = useTheme();
+  const [recentAnswers, setRecentAnswers] = useState([]);
+  const [score,  setScore]  = useState(0);
+  const [total,  setTotal]  = useState(0);
+  const [streak, setStreak] = useState(0);
+  const [q,      setQ]      = useState(() => getQuestion([]));
+  const [chosen, setChosen] = useState(null);
+  const shakeAnim = useRef(new Animated.Value(0)).current;
 
   function answer(option) {
     if (chosen) return;
@@ -50,75 +51,90 @@ export default function FlagQuizScreen({ navigation }) {
     if (correct) {
       setScore(s => s + 1);
       setStreak(s => s + 1);
-      setUsed(u => [...u, q.correct.answer]);
     } else {
       setStreak(0);
       Animated.sequence([
-        Animated.timing(shakeAnim, { toValue: 10, duration: 60, useNativeDriver: true }),
+        Animated.timing(shakeAnim, { toValue: 10,  duration: 60, useNativeDriver: true }),
         Animated.timing(shakeAnim, { toValue: -10, duration: 60, useNativeDriver: true }),
-        Animated.timing(shakeAnim, { toValue: 6, duration: 60, useNativeDriver: true }),
-        Animated.timing(shakeAnim, { toValue: 0, duration: 60, useNativeDriver: true }),
+        Animated.timing(shakeAnim, { toValue: 6,   duration: 60, useNativeDriver: true }),
+        Animated.timing(shakeAnim, { toValue: 0,   duration: 60, useNativeDriver: true }),
       ]).start();
     }
-    setTimeout(() => { setChosen(null); setQ(getQuestion(FLAGS, used)); }, 1200);
+    setTimeout(() => {
+      const newRecent = [q.correct.answer, ...recentAnswers].slice(0, 5);
+      setRecentAnswers(newRecent);
+      setChosen(null);
+      setQ(getQuestion(newRecent));
+    }, 1200);
   }
 
-  function reset() { setScore(0); setTotal(0); setUsed([]); setStreak(0); setChosen(null); setQ(getQuestion(FLAGS, [])); }
+  function reset() {
+    setScore(0); setTotal(0); setStreak(0);
+    setChosen(null); setRecentAnswers([]);
+    setQ(getQuestion([]));
+  }
 
-  const pct = total > 0 ? Math.round((score/total)*100) : 0;
+  const pct = total > 0 ? Math.round((score / total) * 100) : 0;
 
   return (
-    <SafeAreaView style={styles.screen}>
-      <View style={styles.topbar}>
-        <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-          <Text style={styles.backText}>← Back</Text>
+    <SafeAreaView style={[styles.screen, { backgroundColor: COLORS.bg }]}>
+      <View style={[styles.topbar, { borderBottomColor: COLORS.border }]}>
+        <TouchableOpacity style={[styles.backBtn, { borderColor: COLORS.border }]} onPress={() => navigation.goBack()}>
+          <Text style={[styles.backText, { color: COLORS.textSecondary }]}>← Back</Text>
         </TouchableOpacity>
-        <Text style={styles.title}>Flag Quiz</Text>
-        <TouchableOpacity onPress={reset}><Text style={styles.resetBtn}>Reset</Text></TouchableOpacity>
+        <Text style={[styles.title, { color: COLORS.textPrimary }]}>Flag Quiz</Text>
+        <TouchableOpacity onPress={reset}>
+          <Text style={[{ fontSize: 13, color: COLORS.accent }]}>Reset</Text>
+        </TouchableOpacity>
       </View>
       <AdBanner />
 
       <View style={styles.content}>
-        {/* Score */}
         <View style={styles.scoreRow}>
-          <View style={styles.scoreCard}>
-            <Text style={styles.scoreNum}>{score}/{total}</Text>
-            <Text style={styles.scoreLabel}>Score</Text>
-          </View>
-          <View style={styles.scoreCard}>
-            <Text style={styles.scoreNum}>{pct}%</Text>
-            <Text style={styles.scoreLabel}>Accuracy</Text>
-          </View>
+          {[
+            { label: 'Score', value: `${score}/${total}` },
+            { label: 'Accuracy', value: `${pct}%` },
+          ].map(s => (
+            <View key={s.label} style={[styles.scoreCard, { backgroundColor: COLORS.bgSecondary, borderColor: COLORS.border }]}>
+              <Text style={[styles.scoreNum, { color: COLORS.textPrimary }]}>{s.value}</Text>
+              <Text style={[styles.scoreLabel, { color: COLORS.textTertiary }]}>{s.label}</Text>
+            </View>
+          ))}
           {streak >= 3 && (
-            <View style={[styles.scoreCard, { borderColor: '#F5A623' }]}>
-              <Text style={styles.scoreNum}>🔥{streak}</Text>
-              <Text style={styles.scoreLabel}>Streak</Text>
+            <View style={[styles.scoreCard, { backgroundColor: COLORS.bgSecondary, borderColor: '#F5A623' }]}>
+              <Text style={[styles.scoreNum, { color: COLORS.textPrimary }]}>🔥{streak}</Text>
+              <Text style={[styles.scoreLabel, { color: COLORS.textTertiary }]}>Streak</Text>
             </View>
           )}
         </View>
 
-        {/* Flag */}
-        <Animated.View style={[styles.flagBox, { transform: [{ translateX: shakeAnim }] }]}>
+        <Animated.View style={[styles.flagBox, {
+          backgroundColor: COLORS.bgSecondary, borderColor: COLORS.border,
+          transform: [{ translateX: shakeAnim }],
+        }]}>
           <Text style={styles.flagEmoji}>{q.correct.flag}</Text>
-          <Text style={styles.flagQuestion}>Which country is this?</Text>
+          <Text style={[styles.flagQuestion, { color: COLORS.textSecondary }]}>Which country is this?</Text>
         </Animated.View>
 
-        {/* Options */}
         <View style={styles.options}>
           {q.options.map(opt => {
             let bg = COLORS.bgSecondary;
             let bc = COLORS.border;
+            let textColor = COLORS.textPrimary;
             if (chosen) {
-              if (opt.answer === q.correct.answer) { bg = COLORS.successLight; bc = COLORS.success; }
-              else if (opt.answer === chosen) { bg = '#FFF0F0'; bc = COLORS.danger; }
+              if (opt.answer === q.correct.answer) {
+                bg = COLORS.successLight; bc = COLORS.success; textColor = COLORS.success;
+              } else if (opt.answer === chosen) {
+                bg = COLORS.dangerLight; bc = COLORS.danger; textColor = COLORS.danger;
+              }
             }
             return (
               <TouchableOpacity key={opt.answer}
                 style={[styles.option, { backgroundColor: bg, borderColor: bc }]}
                 onPress={() => answer(opt)} disabled={!!chosen} activeOpacity={0.7}>
-                <Text style={styles.optionText}>{opt.answer}</Text>
-                {chosen && opt.answer === q.correct.answer && <Text style={styles.optionTick}>✓</Text>}
-                {chosen && opt.answer === chosen && opt.answer !== q.correct.answer && <Text style={styles.optionCross}>✕</Text>}
+                <Text style={[styles.optionText, { color: textColor }]}>{opt.answer}</Text>
+                {chosen && opt.answer === q.correct.answer && <Text style={{ fontSize: 18, fontWeight: '700', color: COLORS.success }}>✓</Text>}
+                {chosen && opt.answer === chosen && opt.answer !== q.correct.answer && <Text style={{ fontSize: 18, fontWeight: '700', color: COLORS.danger }}>✕</Text>}
               </TouchableOpacity>
             );
           })}
@@ -129,23 +145,20 @@ export default function FlagQuizScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: COLORS.bg },
-  topbar: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 12, borderBottomWidth: 0.5, borderBottomColor: COLORS.border, gap: 12 },
-  backBtn: { paddingHorizontal: 10, paddingVertical: 5, borderRadius: RADIUS.md, borderWidth: 0.5, borderColor: COLORS.border },
-  backText: { fontSize: 13, color: COLORS.textSecondary },
-  title: { flex: 1, fontSize: 16, fontWeight: '500', color: COLORS.textPrimary },
-  resetBtn: { fontSize: 13, color: COLORS.accent },
-  content: { flex: 1, padding: 20, gap: 20 },
-  scoreRow: { flexDirection: 'row', gap: 10 },
-  scoreCard: { flex: 1, padding: 12, backgroundColor: COLORS.bgSecondary, borderRadius: RADIUS.lg, borderWidth: 0.5, borderColor: COLORS.border, alignItems: 'center' },
-  scoreNum: { fontSize: 20, fontWeight: '600', color: COLORS.textPrimary },
-  scoreLabel: { fontSize: 11, color: COLORS.textTertiary },
-  flagBox: { alignItems: 'center', gap: 12, padding: 24, backgroundColor: COLORS.bgSecondary, borderRadius: RADIUS.xl, borderWidth: 0.5, borderColor: COLORS.border },
-  flagEmoji: { fontSize: 80 },
-  flagQuestion: { fontSize: 15, color: COLORS.textSecondary },
-  options: { gap: 10 },
-  option: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 16, borderRadius: RADIUS.lg, borderWidth: 1.5 },
-  optionText: { fontSize: 15, fontWeight: '500', color: COLORS.textPrimary },
-  optionTick: { fontSize: 18, color: COLORS.success },
-  optionCross: { fontSize: 18, color: COLORS.danger },
+  screen:     { flex: 1 },
+  topbar:     { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 12, borderBottomWidth: 0.5, gap: 12 },
+  backBtn:    { paddingHorizontal: 10, paddingVertical: 5, borderRadius: RADIUS.md, borderWidth: 0.5 },
+  backText:   { fontSize: 13 },
+  title:      { flex: 1, fontSize: 16, fontWeight: '500' },
+  content:    { flex: 1, padding: 20, gap: 16 },
+  scoreRow:   { flexDirection: 'row', gap: 10 },
+  scoreCard:  { flex: 1, padding: 12, borderRadius: RADIUS.lg, borderWidth: 0.5, alignItems: 'center' },
+  scoreNum:   { fontSize: 20, fontWeight: '600' },
+  scoreLabel: { fontSize: 11 },
+  flagBox:    { alignItems: 'center', gap: 12, padding: 24, borderRadius: RADIUS.xl, borderWidth: 0.5 },
+  flagEmoji:  { fontSize: 80 },
+  flagQuestion: { fontSize: 15 },
+  options:    { gap: 10 },
+  option:     { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 16, borderRadius: RADIUS.lg, borderWidth: 1.5 },
+  optionText: { fontSize: 15, fontWeight: '500' },
 });

@@ -6,6 +6,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { COLORS, RADIUS } from '../data/theme';
+import { useTheme } from '../data/ThemeContext';
 import AdBanner from '../components/AdBanner';
 
 const SIZES = [
@@ -20,6 +21,7 @@ const GOAL_KEY  = 'water_goal';
 const LOG_KEY   = () => `water_log_${new Date().toDateString()}`;
 
 export default function WaterIntakeScreen({ navigation }) {
+  const { COLORS: dynCOLORS } = useTheme();
   const [intake, setIntake]       = useState(0);
   const [goal, setGoal]           = useState(2000);
   const [log, setLog]             = useState([]);
@@ -99,7 +101,7 @@ export default function WaterIntakeScreen({ navigation }) {
   }
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView style={[styles.screen, { backgroundColor: dynCOLORS.bg }]}>
       <View style={styles.topbar}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
           <Text style={styles.backText}>← Back</Text>

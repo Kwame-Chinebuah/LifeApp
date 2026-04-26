@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, RADIUS } from '../data/theme';
+import { useTheme } from '../data/ThemeContext';
 import AdBanner from '../components/AdBanner';
 
 const SCREEN_WIDTH  = Dimensions.get('window').width;
@@ -17,6 +18,7 @@ const PX_PER_CM = PPI / CM_PER_INCH;
 const PX_PER_MM = PX_PER_CM / 10;
 
 export default function RulerScreen({ navigation }) {
+  const { COLORS: dynCOLORS } = useTheme();
   const [unit, setUnit]   = useState('cm'); // cm or in
   const [length, setLength] = useState(SCREEN_HEIGHT * 0.6);
 
@@ -45,7 +47,7 @@ export default function RulerScreen({ navigation }) {
   const ticks = buildTicks();
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView style={[styles.screen, { backgroundColor: dynCOLORS.bg }]}>
       <View style={styles.topbar}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
           <Text style={styles.backText}>← Back</Text>

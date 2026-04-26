@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, RADIUS } from '../data/theme';
+import { useTheme } from '../data/ThemeContext';
 import AdBanner from '../components/AdBanner';
 
 function generatePassword(length = 16, opts = {}) {
@@ -20,6 +21,7 @@ function generatePassword(length = 16, opts = {}) {
 }
 
 export default function PasswordManagerScreen({ navigation }) {
+  const { COLORS: dynCOLORS } = useTheme();
   const [passwords, setPasswords] = useState([]);
   const [adding, setAdding]       = useState(false);
   const [siteName, setSiteName]   = useState('');
@@ -52,7 +54,7 @@ export default function PasswordManagerScreen({ navigation }) {
   function toggleShow(id) { setShowPw(prev => ({ ...prev, [id]: !prev[id] })); }
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView style={[styles.screen, { backgroundColor: dynCOLORS.bg }]}>
       <View style={styles.topbar}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
           <Text style={styles.backText}>← Back</Text>

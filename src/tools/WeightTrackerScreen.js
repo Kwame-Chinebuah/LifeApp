@@ -3,11 +3,13 @@ import { View, Text, TouchableOpacity, StyleSheet, TextInput, ScrollView, Keyboa
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { COLORS, RADIUS } from '../data/theme';
+import { useTheme } from '../data/ThemeContext';
 import AdBanner from '../components/AdBanner';
 
 const KEY = 'weight_tracker';
 
 export default function WeightTrackerScreen({ navigation }) {
+  const { COLORS: dynCOLORS } = useTheme();
   const [entries, setEntries] = useState([]);
   const [weight,  setWeight]  = useState('');
   const [unit,    setUnit]    = useState('kg');
@@ -36,7 +38,7 @@ export default function WeightTrackerScreen({ navigation }) {
   const diff     = latest && entries[1] ? getDiff(latest.weight, entries[1].weight) : null;
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView style={[styles.screen, { backgroundColor: dynCOLORS.bg }]}>
       <View style={styles.topbar}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
           <Text style={styles.backText}>← Back</Text>

@@ -6,6 +6,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { COLORS, RADIUS } from '../data/theme';
+import { useTheme } from '../data/ThemeContext';
 import AdBanner from '../components/AdBanner';
 
 const TASKS_KEY  = 'checklist_tasks';
@@ -18,6 +19,7 @@ const DEFAULT_TASKS = [
 ];
 
 export default function ChecklistScreen({ navigation }) {
+  const { COLORS: dynCOLORS } = useTheme();
   const [tasks, setTasks]     = useState([]);
   const [done, setDone]       = useState([]);
   const [newTask, setNewTask] = useState('');
@@ -78,14 +80,14 @@ export default function ChecklistScreen({ navigation }) {
     saveDone([]);
   }
 
-  if (!loaded) return <SafeAreaView style={styles.screen} />;
+  if (!loaded) return <SafeAreaView style={[styles.screen, { backgroundColor: dynCOLORS.bg }]} />;
 
   const doneCount = done.length;
   const total     = tasks.length;
   const pct       = total > 0 ? Math.round((doneCount / total) * 100) : 0;
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView style={[styles.screen, { backgroundColor: dynCOLORS.bg }]}>
       <View style={styles.topbar}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
           <Text style={styles.backText}>← Back</Text>

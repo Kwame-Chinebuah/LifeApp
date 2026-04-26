@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, RADIUS } from '../data/theme';
+import { useTheme } from '../data/ThemeContext';
 import AdBanner from '../components/AdBanner';
 
 const CONTINENTS = [
@@ -223,6 +224,7 @@ const COUNTRIES = [
 ];
 
 export default function GlobeScreen({ navigation }) {
+  const { COLORS: dynCOLORS } = useTheme();
   const [search, setSearch]       = useState('');
   const [continent, setContinent] = useState('all');
   const [selected, setSelected]   = useState(null);
@@ -236,7 +238,7 @@ export default function GlobeScreen({ navigation }) {
   }).sort((a, b) => a.name.localeCompare(b.name)), [search, continent]);
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView style={[styles.screen, { backgroundColor: dynCOLORS.bg }]}>
       <View style={styles.topbar}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
           <Text style={styles.backText}>← Back</Text>

@@ -6,11 +6,13 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { COLORS, RADIUS } from '../data/theme';
+import { useTheme } from '../data/ThemeContext';
 import AdBanner from '../components/AdBanner';
 
 const KEY = 'shopping_list';
 
 export default function ShoppingListScreen({ navigation }) {
+  const { COLORS: dynCOLORS } = useTheme();
   const [items, setItems]     = useState([]);
   const [newItem, setNewItem] = useState('');
   const [newQty, setNewQty]   = useState('1');
@@ -42,7 +44,7 @@ export default function ShoppingListScreen({ navigation }) {
   const doneCount = items.filter(i => i.done).length;
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView style={[styles.screen, { backgroundColor: dynCOLORS.bg }]}>
       <View style={styles.topbar}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
           <Text style={styles.backText}>← Back</Text>

@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, RADIUS } from '../data/theme';
+import { useTheme } from '../data/ThemeContext';
 import AdBanner from '../components/AdBanner';
 
 const PATTERNS = [
@@ -20,6 +21,7 @@ const PHASES = (p) => {
 };
 
 export default function BreathingScreen({ navigation }) {
+  const { COLORS: dynCOLORS } = useTheme();
   const [pattern, setPattern]   = useState(PATTERNS[0]);
   const [running, setRunning]   = useState(false);
   const [phaseIdx, setPhaseIdx] = useState(0);
@@ -67,7 +69,7 @@ export default function BreathingScreen({ navigation }) {
   }
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView style={[styles.screen, { backgroundColor: dynCOLORS.bg }]}>
       <View style={styles.topbar}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
           <Text style={styles.backText}>← Back</Text>

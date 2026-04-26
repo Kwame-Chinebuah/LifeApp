@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, RADIUS } from '../data/theme';
+import { useTheme } from '../data/ThemeContext';
 import AdBanner from '../components/AdBanner';
 
 const PLANETS = [
@@ -17,6 +18,7 @@ const PLANETS = [
 ];
 
 export default function SolarSystemScreen({ navigation }) {
+  const { COLORS: dynCOLORS } = useTheme();
   const [selected, setSelected] = useState(null);
   const spinAnims = useRef(PLANETS.map(() => new Animated.Value(0))).current;
 
@@ -31,7 +33,7 @@ export default function SolarSystemScreen({ navigation }) {
   }, []);
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView style={[styles.screen, { backgroundColor: dynCOLORS.bg }]}>
       <View style={styles.topbar}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
           <Text style={styles.backText}>← Back</Text>

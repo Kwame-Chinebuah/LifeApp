@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, RADIUS } from '../data/theme';
+import { useTheme } from '../data/ThemeContext';
 import AdBanner from '../components/AdBanner';
 
 const PRESETS = [
@@ -19,6 +20,7 @@ function fmt(s) {
 }
 
 export default function MeditationScreen({ navigation }) {
+  const { COLORS: dynCOLORS } = useTheme();
   const [duration, setDuration] = useState(600);
   const [remaining, setRemaining] = useState(600);
   const [running, setRunning]   = useState(false);
@@ -75,7 +77,7 @@ export default function MeditationScreen({ navigation }) {
   const pct = 1 - remaining / duration;
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView style={[styles.screen, { backgroundColor: dynCOLORS.bg }]}>
       <View style={styles.topbar}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
           <Text style={styles.backText}>← Back</Text>

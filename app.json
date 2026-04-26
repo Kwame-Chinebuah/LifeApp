@@ -8,9 +8,9 @@
     "icon": "./images/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./images/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "image": "./images/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#12237F"
     },
     "ios": {
       "supportsTablet": true
@@ -19,10 +19,14 @@
       "package": "com.kwamkit.lifeapp",
       "adaptiveIcon": {
         "foregroundImage": "./images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#12237F"
       },
       "edgeToEdgeEnabled": true
     },
+    "assetBundlePatterns": [
+      "images/*",
+      "assets/*"
+    ],
     "web": {
       "favicon": "./assets/favicon.png"
     },

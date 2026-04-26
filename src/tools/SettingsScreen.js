@@ -6,6 +6,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { COLORS, RADIUS } from '../data/theme';
+import { useTheme } from '../data/ThemeContext';
 
 const BACKUP_OPTIONS = [
   { id: 'daily',   label: 'Daily',       desc: 'Back up every day' },
@@ -15,6 +16,7 @@ const BACKUP_OPTIONS = [
 ];
 
 export default function SettingsScreen({ navigation }) {
+  const { COLORS: dynCOLORS } = useTheme();
   const [backupFreq, setBackupFreq] = useState('weekly');
   const [lastBackup, setLastBackup] = useState(null);
 
@@ -60,7 +62,7 @@ export default function SettingsScreen({ navigation }) {
   }
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView style={[styles.screen, { backgroundColor: dynCOLORS.bg }]}>
       <View style={styles.topbar}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
           <Text style={styles.backText}>← Back</Text>

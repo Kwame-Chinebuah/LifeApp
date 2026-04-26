@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput, ScrollView, Clipboard, ToastAndroid, Platform, Alert, KeyboardAvoidingView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, RADIUS } from '../data/theme';
+import { useTheme } from '../data/ThemeContext';
 import AdBanner from '../components/AdBanner';
 
 function copyToClipboard(text) {
@@ -11,6 +12,7 @@ function copyToClipboard(text) {
 }
 
 export default function RandomPickerScreen({ navigation }) {
+  const { COLORS: dynCOLORS } = useTheme();
   const [count,   setCount]   = useState('1');
   const [minVal,  setMinVal]  = useState('1');
   const [maxVal,  setMaxVal]  = useState('100');
@@ -37,7 +39,7 @@ export default function RandomPickerScreen({ navigation }) {
   }
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView style={[styles.screen, { backgroundColor: dynCOLORS.bg }]}>
       <View style={styles.topbar}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
           <Text style={styles.backText}>← Back</Text>

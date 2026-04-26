@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, RADIUS } from '../data/theme';
+import { useTheme } from '../data/ThemeContext';
 import AdBanner from '../components/AdBanner';
 
 const TYPES = [
@@ -16,6 +17,7 @@ const TYPES = [
 ];
 
 export default function QRGeneratorScreen({ navigation }) {
+  const { COLORS: dynCOLORS } = useTheme();
   const [type, setType]         = useState('url');
   const [value, setValue]       = useState('');
   const [wifiPass, setWifiPass] = useState('');
@@ -50,7 +52,7 @@ export default function QRGeneratorScreen({ navigation }) {
   const activeType = TYPES.find(t => t.id === type);
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView style={[styles.screen, { backgroundColor: dynCOLORS.bg }]}>
       <View style={styles.topbar}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
           <Text style={styles.backText}>← Back</Text>

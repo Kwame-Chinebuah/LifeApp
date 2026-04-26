@@ -1,7 +1,10 @@
 import 'react-native-gesture-handler';
 import React, { useState } from 'react';
+import { View, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { ThemeProvider } from './src/data/ThemeContext';
+import { useTheme } from './src/data/ThemeContext';
 
 // Screens
 import SplashAnimationScreen  from './src/screens/SplashAnimationScreen';
@@ -40,12 +43,26 @@ import FlagQuizScreen         from './src/tools/FlagQuizScreen';
 import WordScrambleScreen     from './src/tools/WordScrambleScreen';
 import TrueOrFalseScreen      from './src/tools/TrueOrFalseScreen';
 import QuickMathsScreen       from './src/tools/QuickMathsScreen';
-import PeriodTrackerScreen    from './src/tools/PeriodTrackerScreen';
 import ProScreen              from './src/screens/ProScreen';
+import NotesScreen            from './src/tools/NotesScreen';
 
 const Stack = createStackNavigator();
 
-export default function App() {
+// Wraps any screen so it gets the dark/light background automatically
+// Uses absolute positioning to cover the SafeAreaView background too
+function withTheme(ScreenComponent) {
+  return function ThemedScreen(props) {
+    const { COLORS } = useTheme();
+    return (
+      <View style={{ flex: 1, backgroundColor: COLORS.bg }}>
+        <View style={[StyleSheet.absoluteFillObject, { backgroundColor: COLORS.bg }]} />
+        <ScreenComponent {...props} />
+      </View>
+    );
+  };
+}
+
+function AppNavigator() {
   const [splashDone, setSplashDone] = useState(false);
 
   if (!splashDone) {
@@ -56,43 +73,49 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false, animation: 'slide_from_right' }}>
         <Stack.Screen name="Home"               component={HomeScreen} />
-
         {/* Existing tools */}
-        <Stack.Screen name="Calculator"         component={CalculatorScreen} />
-        <Stack.Screen name="UnitConverter"      component={UnitConverterScreen} />
-        <Stack.Screen name="DiscountCalc"       component={DiscountCalcScreen} />
-        <Stack.Screen name="AgeCalculator"      component={AgeCalculatorScreen} />
-        <Stack.Screen name="Stopwatch"          component={StopwatchScreen} />
-        <Stack.Screen name="TipCalculator"      component={TipCalculatorScreen} />
-        <Stack.Screen name="RandomPicker"       component={RandomPickerScreen} />
-        <Stack.Screen name="Checklist"          component={ChecklistScreen} />
-        <Stack.Screen name="BMI"                component={BMIScreen} />
-        <Stack.Screen name="WaterIntake"        component={WaterIntakeScreen} />
-        <Stack.Screen name="PasswordManager"    component={PasswordManagerScreen} />
-        <Stack.Screen name="QRGenerator"        component={QRGeneratorScreen} />
-        <Stack.Screen name="Ruler"              component={RulerScreen} />
-        <Stack.Screen name="FuelCost"           component={FuelCostScreen} />
-        <Stack.Screen name="DiceRoller"         component={DiceRollerScreen} />
-        <Stack.Screen name="CoinFlip"           component={CoinFlipScreen} />
-        <Stack.Screen name="TimeZones"          component={TimeZonesScreen} />
-        <Stack.Screen name="Globe"              component={GlobeScreen} />
-        <Stack.Screen name="Settings"           component={SettingsScreen} />
-
+        <Stack.Screen name="Calculator"         component={withTheme(CalculatorScreen)} />
+        <Stack.Screen name="UnitConverter"      component={withTheme(UnitConverterScreen)} />
+        <Stack.Screen name="DiscountCalc"       component={withTheme(DiscountCalcScreen)} />
+        <Stack.Screen name="AgeCalculator"      component={withTheme(AgeCalculatorScreen)} />
+        <Stack.Screen name="Stopwatch"          component={withTheme(StopwatchScreen)} />
+        <Stack.Screen name="TipCalculator"      component={withTheme(TipCalculatorScreen)} />
+        <Stack.Screen name="RandomPicker"       component={withTheme(RandomPickerScreen)} />
+        <Stack.Screen name="Checklist"          component={withTheme(ChecklistScreen)} />
+        <Stack.Screen name="BMI"                component={withTheme(BMIScreen)} />
+        <Stack.Screen name="WaterIntake"        component={withTheme(WaterIntakeScreen)} />
+        <Stack.Screen name="PasswordManager"    component={withTheme(PasswordManagerScreen)} />
+        <Stack.Screen name="QRGenerator"        component={withTheme(QRGeneratorScreen)} />
+        <Stack.Screen name="Ruler"              component={withTheme(RulerScreen)} />
+        <Stack.Screen name="FuelCost"           component={withTheme(FuelCostScreen)} />
+        <Stack.Screen name="DiceRoller"         component={withTheme(DiceRollerScreen)} />
+        <Stack.Screen name="CoinFlip"           component={withTheme(CoinFlipScreen)} />
+        <Stack.Screen name="TimeZones"          component={withTheme(TimeZonesScreen)} />
+        <Stack.Screen name="Globe"              component={withTheme(GlobeScreen)} />
+        <Stack.Screen name="Settings"           component={withTheme(SettingsScreen)} />
         {/* NEW tools */}
-        <Stack.Screen name="ShoppingList"       component={ShoppingListScreen} />
-        <Stack.Screen name="MealPlanner"        component={MealPlannerScreen} />
-        <Stack.Screen name="WeightTracker"      component={WeightTrackerScreen} />
-        <Stack.Screen name="Meditation"         component={MeditationScreen} />
-        <Stack.Screen name="Breathing"          component={BreathingScreen} />
-        <Stack.Screen name="MedicationReminder" component={MedicationScreen} />
-        <Stack.Screen name="SolarSystem"        component={SolarSystemScreen} />
-        <Stack.Screen name="FlagQuiz"           component={FlagQuizScreen} />
-        <Stack.Screen name="WordScramble"       component={WordScrambleScreen} />
-        <Stack.Screen name="TrueOrFalse"        component={TrueOrFalseScreen} />
-        <Stack.Screen name="QuickMaths"         component={QuickMathsScreen} />
-        <Stack.Screen name="PeriodTracker"      component={PeriodTrackerScreen} />
+        <Stack.Screen name="ShoppingList"       component={withTheme(ShoppingListScreen)} />
+        <Stack.Screen name="MealPlanner"        component={withTheme(MealPlannerScreen)} />
+        <Stack.Screen name="WeightTracker"      component={withTheme(WeightTrackerScreen)} />
+        <Stack.Screen name="Meditation"         component={withTheme(MeditationScreen)} />
+        <Stack.Screen name="Breathing"          component={withTheme(BreathingScreen)} />
+        <Stack.Screen name="MedicationReminder" component={withTheme(MedicationScreen)} />
+        <Stack.Screen name="SolarSystem"        component={withTheme(SolarSystemScreen)} />
+        <Stack.Screen name="FlagQuiz"           component={withTheme(FlagQuizScreen)} />
+        <Stack.Screen name="WordScramble"       component={withTheme(WordScrambleScreen)} />
+        <Stack.Screen name="TrueOrFalse"        component={withTheme(TrueOrFalseScreen)} />
+        <Stack.Screen name="QuickMaths"         component={withTheme(QuickMathsScreen)} />
         <Stack.Screen name="Pro"                component={ProScreen} />
+        <Stack.Screen name="Notes"              component={withTheme(NotesScreen)} />
       </Stack.Navigator>
     </NavigationContainer>
+  );
+}
+
+export default function App() {
+  return (
+    <ThemeProvider>
+      <AppNavigator />
+    </ThemeProvider>
   );
 }

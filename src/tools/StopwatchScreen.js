@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, RADIUS } from '../data/theme';
+import { useTheme } from '../data/ThemeContext';
 import AdBanner from '../components/AdBanner';
 
 function pad(n) { return String(n).padStart(2, '0'); }
@@ -16,6 +17,7 @@ function formatTime(ms) {
 }
 
 export default function StopwatchScreen({ navigation }) {
+  const { COLORS: dynCOLORS } = useTheme();
   const [mode, setMode]       = useState('stopwatch'); // 'stopwatch' | 'timer'
   const [ms, setMs]           = useState(0);
   const [running, setRunning] = useState(false);
@@ -99,7 +101,7 @@ export default function StopwatchScreen({ navigation }) {
   }
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView style={[styles.screen, { backgroundColor: dynCOLORS.bg }]}>
       <View style={styles.topbar}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
           <Text style={styles.backText}>← Back</Text>

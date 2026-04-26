@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, RADIUS } from '../data/theme';
+import { useTheme } from '../data/ThemeContext';
 import AdBanner from '../components/AdBanner';
 
 const UNIT_DATA = {
@@ -19,6 +20,7 @@ function convertTemp(val, fi, ti) {
 }
 
 export default function UnitConverterScreen({ navigation }) {
+  const { COLORS: dynCOLORS } = useTheme();
   const cats = Object.keys(UNIT_DATA);
   const [cat, setCat]     = useState('Length');
   const [from, setFrom]   = useState(0);
@@ -36,7 +38,7 @@ export default function UnitConverterScreen({ navigation }) {
   }
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView style={[styles.screen, { backgroundColor: dynCOLORS.bg }]}>
       <View style={styles.topbar}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
           <Text style={styles.backText}>← Back</Text>

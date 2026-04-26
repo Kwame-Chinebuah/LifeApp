@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, RADIUS } from '../data/theme';
+import { useTheme } from '../data/ThemeContext';
 import AdBanner from '../components/AdBanner';
 
 const QUESTIONS = [
@@ -30,6 +31,7 @@ const QUESTIONS = [
 function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
 
 export default function TrueOrFalseScreen({ navigation }) {
+  const { COLORS: dynCOLORS } = useTheme();
   const [questions] = useState(() => shuffle(QUESTIONS));
   const [idx, setIdx]       = useState(0);
   const [chosen, setChosen] = useState(null);
@@ -58,7 +60,7 @@ export default function TrueOrFalseScreen({ navigation }) {
   if (done) {
     const pct = Math.round((score / questions.length) * 100);
     return (
-      <SafeAreaView style={styles.screen}>
+      <SafeAreaView style={[styles.screen, { backgroundColor: dynCOLORS.bg }]}>
         <View style={styles.topbar}>
           <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
             <Text style={styles.backText}>← Back</Text>
@@ -80,7 +82,7 @@ export default function TrueOrFalseScreen({ navigation }) {
   }
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView style={[styles.screen, { backgroundColor: dynCOLORS.bg }]}>
       <View style={styles.topbar}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
           <Text style={styles.backText}>← Back</Text>

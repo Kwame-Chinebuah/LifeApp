@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, RADIUS } from '../data/theme';
+import { useTheme } from '../data/ThemeContext';
 import AdBanner from '../components/AdBanner';
 
 const TIP_PRESETS = [0, 10, 12.5, 15, 18, 20, 25];
 
 export default function TipCalculatorScreen({ navigation }) {
+  const { COLORS: dynCOLORS } = useTheme();
   const [bill, setBill]     = useState('');
   const [tipPct, setTipPct] = useState(15);
   const [people, setPeople] = useState(1);
@@ -19,7 +21,7 @@ export default function TipCalculatorScreen({ navigation }) {
   const perHead   = people >= 1 ? total / people : total;
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView style={[styles.screen, { backgroundColor: dynCOLORS.bg }]}>
       <View style={styles.topbar}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
           <Text style={styles.backText}>← Back</Text>

@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, RADIUS } from '../data/theme';
+import { useTheme } from '../data/ThemeContext';
 import AdBanner from '../components/AdBanner';
 
 // 3D coin using layered views to simulate depth
@@ -67,6 +68,7 @@ function Coin3D({ side, flipping }) {
 }
 
 export default function CoinFlipScreen({ navigation }) {
+  const { COLORS: dynCOLORS } = useTheme();
   const [result, setResult]     = useState(null);
   const [flipping, setFlipping] = useState(false);
   const [heads, setHeads]       = useState(0);
@@ -113,7 +115,7 @@ export default function CoinFlipScreen({ navigation }) {
   const total = heads + tails;
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView style={[styles.screen, { backgroundColor: dynCOLORS.bg }]}>
       <View style={styles.topbar}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
           <Text style={styles.backText}>← Back</Text>

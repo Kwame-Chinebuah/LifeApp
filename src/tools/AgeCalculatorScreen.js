@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Modal } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, RADIUS } from '../data/theme';
+import { useTheme } from '../data/ThemeContext';
 import AdBanner from '../components/AdBanner';
 
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -53,6 +54,7 @@ function PickerColumn({ items, selected, onSelect }) {
 }
 
 export default function AgeCalculatorScreen({ navigation }) {
+  const { COLORS: dynCOLORS } = useTheme();
   const now = new Date();
   const [selDay,   setSelDay]   = useState(1);
   const [selMonth, setSelMonth] = useState(1);
@@ -93,7 +95,7 @@ export default function AgeCalculatorScreen({ navigation }) {
   const age = calcAge();
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView style={[styles.screen, { backgroundColor: dynCOLORS.bg }]}>
       <View style={styles.topbar}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
           <Text style={styles.backText}>← Back</Text>

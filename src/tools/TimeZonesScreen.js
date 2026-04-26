@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, RADIUS } from '../data/theme';
+import { useTheme } from '../data/ThemeContext';
 import AdBanner from '../components/AdBanner';
 
 const ZONES = [
@@ -39,6 +40,7 @@ function isNight(tz) {
 }
 
 export default function TimeZonesScreen({ navigation }) {
+  const { COLORS: dynCOLORS } = useTheme();
   const [times, setTimes] = useState({});
   const [pinned, setPinned] = useState(['Europe/London', 'America/New_York', 'Asia/Dubai']);
 
@@ -66,7 +68,7 @@ export default function TimeZonesScreen({ navigation }) {
   });
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView style={[styles.screen, { backgroundColor: dynCOLORS.bg }]}>
       <View style={styles.topbar}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
           <Text style={styles.backText}>← Back</Text>

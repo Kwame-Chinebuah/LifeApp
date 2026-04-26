@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, RADIUS } from '../data/theme';
+import { useTheme } from '../data/ThemeContext';
 import AdBanner from '../components/AdBanner';
 
 const WORDS = [
@@ -44,6 +45,7 @@ function getWord(used) {
 }
 
 export default function WordScrambleScreen({ navigation }) {
+  const { COLORS: dynCOLORS } = useTheme();
   const [used,      setUsed]     = useState([]);
   const [current,   setCurrent]  = useState(() => getWord([]));
   const [shuffled,  setShuffled] = useState(() => scramble(getWord([]).word));
@@ -69,7 +71,7 @@ export default function WordScrambleScreen({ navigation }) {
   }
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView style={[styles.screen, { backgroundColor: dynCOLORS.bg }]}>
       <View style={styles.topbar}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
           <Text style={styles.backText}>← Back</Text>

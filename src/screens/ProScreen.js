@@ -56,7 +56,7 @@ export default function ProScreen({ navigation }) {
           <Text style={styles.priceAmount}>1</Text>
           <View>
             <Text style={styles.pricePer}>per</Text>
-            <Text style={styles.pricePer}>month</Text>
+            <Text style={styles.pricePer}>one-time</Text>
           </View>
         </View>
 
@@ -77,7 +77,7 @@ export default function ProScreen({ navigation }) {
 
         {/* Subscribe button */}
         <TouchableOpacity style={styles.subscribeBtn} onPress={handleSubscribe} activeOpacity={0.85}>
-          <Text style={styles.subscribeBtnText}>Subscribe — £1/month</Text>
+          <Text style={styles.subscribeBtnText}>Get Pro — £1 One-Time</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.restoreBtn} onPress={handleRestore}>
@@ -85,7 +85,7 @@ export default function ProScreen({ navigation }) {
         </TouchableOpacity>
 
         <Text style={styles.legal}>
-          Subscription automatically renews at £1.00/month. Cancel anytime in your Google Play account settings. By subscribing you agree to our Terms of Service and Privacy Policy.
+          One-time purchase of £1.00. No subscription, no recurring charges. By purchasing you agree to our Terms of Service and Privacy Policy.
         </Text>
 
         {/* KwamKitt branding */}

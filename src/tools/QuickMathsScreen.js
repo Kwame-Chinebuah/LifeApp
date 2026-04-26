@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, RADIUS } from '../data/theme';
+import { useTheme } from '../data/ThemeContext';
 import AdBanner from '../components/AdBanner';
 
 const TIME_LIMIT = 30;
@@ -26,6 +27,7 @@ function generate(level) {
 }
 
 export default function QuickMathsScreen({ navigation }) {
+  const { COLORS: dynCOLORS } = useTheme();
   const [started, setStarted] = useState(false);
   const [done, setDone]       = useState(false);
   const [score, setScore]     = useState(0);
@@ -74,7 +76,7 @@ export default function QuickMathsScreen({ navigation }) {
   const accuracy = total > 0 ? Math.round((score/total)*100) : 0;
 
   if (!started) return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView style={[styles.screen, { backgroundColor: dynCOLORS.bg }]}>
       <View style={styles.topbar}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
           <Text style={styles.backText}>← Back</Text>
@@ -95,7 +97,7 @@ export default function QuickMathsScreen({ navigation }) {
   );
 
   if (done) return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView style={[styles.screen, { backgroundColor: dynCOLORS.bg }]}>
       <View style={styles.topbar}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
           <Text style={styles.backText}>← Back</Text>
@@ -121,7 +123,7 @@ export default function QuickMathsScreen({ navigation }) {
   );
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView style={[styles.screen, { backgroundColor: dynCOLORS.bg }]}>
       <View style={styles.topbar}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
           <Text style={styles.backText}>← Back</Text>

@@ -18,6 +18,7 @@ export const TOOLS = {
     { id: 'TipCalculator',  icon: '🍽️', label: 'Tip & Split',     desc: 'Split any bill'        },
     { id: 'RandomPicker',   icon: '🎰', label: 'Random Picker',   desc: 'Pick random numbers'   },
     { id: 'Checklist',      icon: '✅', label: 'Daily Checklist', desc: 'Daily tasks tracker'   },
+    { id: 'Notes',          icon: '📝', label: 'Notes',           desc: 'Quick sticky notes'    },
     { id: 'ShoppingList',   icon: '🛒', label: 'Shopping List',   desc: 'Your shopping list'    },
     { id: 'MealPlanner',    icon: '🍽', label: 'Meal Planner',    desc: 'Weekly meal plan'      },
   ],
@@ -28,7 +29,6 @@ export const TOOLS = {
     { id: 'Meditation',     icon: '🧘', label: 'Meditation',      desc: 'Calm timer'            },
     { id: 'Breathing',      icon: '🌬️', label: 'Breathing Timer', desc: 'Inhale & exhale'       },
     { id: 'MedicationReminder', icon: '💊', label: 'Medication',  desc: 'Reminder tracker'      },
-    { id: 'PeriodTracker',  icon: '🩸', label: 'Period Tracker',  desc: 'Cycle & ovulation'     },
   ],
   practical: [
     { id: 'QRGenerator',    icon: '📱', label: 'QR Generator',    desc: 'Create QR codes'       },

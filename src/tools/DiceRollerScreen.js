@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, RADIUS } from '../data/theme';
+import { useTheme } from '../data/ThemeContext';
 import AdBanner from '../components/AdBanner';
 
 const DICE_TYPES = [4, 6, 8, 10, 12, 20, 100];
@@ -52,6 +53,7 @@ function Die3D({ value, diceType, rolling }) {
 }
 
 export default function DiceRollerScreen({ navigation }) {
+  const { COLORS: dynCOLORS } = useTheme();
   const [diceType, setDiceType] = useState(6);
   const [count, setCount]       = useState(1);
   const [results, setResults]   = useState([]);
@@ -106,7 +108,7 @@ export default function DiceRollerScreen({ navigation }) {
   const sum = results.reduce((a, b) => a + b, 0);
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView style={[styles.screen, { backgroundColor: dynCOLORS.bg }]}>
       <View style={styles.topbar}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
           <Text style={styles.backText}>← Back</Text>

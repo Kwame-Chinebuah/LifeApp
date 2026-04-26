@@ -6,6 +6,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { COLORS, RADIUS } from '../data/theme';
+import { useTheme } from '../data/ThemeContext';
 import AdBanner from '../components/AdBanner';
 
 const KEY = 'period_tracker';
@@ -31,6 +32,7 @@ function formatDate(d) {
 }
 
 export default function PeriodTrackerScreen({ navigation }) {
+  const { COLORS: dynCOLORS } = useTheme();
   const today = new Date();
   const [viewYear,  setViewYear]  = useState(today.getFullYear());
   const [viewMonth, setViewMonth] = useState(today.getMonth());
@@ -113,7 +115,7 @@ export default function PeriodTrackerScreen({ navigation }) {
   const daysUntilOv   = ovulation  ? Math.ceil((ovulation - today) / (1000*60*60*24)) : null;
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView style={[styles.screen, { backgroundColor: dynCOLORS.bg }]}>
       <View style={styles.topbar}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
           <Text style={styles.backText}>← Back</Text>
