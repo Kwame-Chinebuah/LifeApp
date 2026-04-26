@@ -38,6 +38,14 @@
           "iosAppId": "ca-app-pub-8920454653234729~3861757950"
         }
       ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "enablePngCrunchInReleaseBuilds": false
+          }
+        }
+      ],
       "./withAdiRegistration"
     ],
     "extra": {
