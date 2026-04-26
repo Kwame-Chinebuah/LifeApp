@@ -8,6 +8,8 @@ import { useTheme } from './src/data/ThemeContext';
 
 // Screens
 import SplashAnimationScreen  from './src/screens/SplashAnimationScreen';
+
+const splashImage = require('./assets/splash.png');
 import HomeScreen             from './src/screens/HomeScreen';
 
 // Existing tools
@@ -66,7 +68,7 @@ function AppNavigator() {
   const [splashDone, setSplashDone] = useState(false);
 
   if (!splashDone) {
-    return <SplashAnimationScreen onFinish={() => setSplashDone(true)} />;
+    return <SplashAnimationScreen splashImage={splashImage} onFinish={() => setSplashDone(true)} />;
   }
 
   return (

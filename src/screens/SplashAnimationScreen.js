@@ -1,15 +1,15 @@
 import React, { useEffect, useRef } from 'react';
-import { View, StyleSheet, Animated, Dimensions } from 'react-native';
+import { View, StyleSheet, Animated, Dimensions, Image } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
-export default function SplashAnimationScreen({ onFinish }) {
+export default function SplashAnimationScreen({ onFinish, splashImage }) {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const exitAnim = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
     Animated.sequence([
-      Animated.timing(fadeAnim, { toValue: 1, duration: 500, useNativeDriver: true }),
+      Animated.timing(fadeAnim, { toValue: 1, duration: 600, useNativeDriver: true }),
       Animated.delay(1400),
       Animated.timing(exitAnim, { toValue: 0, duration: 400, useNativeDriver: true }),
     ]).start(() => onFinish());
@@ -18,7 +18,7 @@ export default function SplashAnimationScreen({ onFinish }) {
   return (
     <Animated.View style={[styles.container, { opacity: exitAnim }]}>
       <Animated.Image
-        source={require('./splash.png')}
+        source={splashImage}
         style={[styles.image, { opacity: fadeAnim }]}
         resizeMode="cover"
       />
